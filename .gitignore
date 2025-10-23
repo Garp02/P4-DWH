@@ -1,0 +1,5 @@
+# Ignorar carpeta de compilación
+build/ 
+
+# Ignorar documento feo de la práctica
+P4 - DWH.pdf
