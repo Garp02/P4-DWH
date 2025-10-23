@@ -1,7 +1,7 @@
 # Fdb version 4
-["pdflatex"] 1761207349 "d:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/Reporte/Reporte P4.tex" "build/Reporte P4.pdf" "Reporte P4" 1761207351 0
+["pdflatex"] 1761207965 "d:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/Reporte/Reporte P4.tex" "build/Reporte P4.pdf" "Reporte P4" 1761207968 0
   "Actividad1.tex" 1761207216 257 10616dd441d1afe9d96ca8df3014a14a ""
-  "Actividad2.tex" 1761207348 1201 80c52f8f3155300de7e4dd8aadf849d5 ""
+  "Actividad2.tex" 1761207965 1199 7295f119a89a36cbeaf21d71eaf9c96f ""
   "C:/Users/ibram/AppData/Local/MiKTeX/fonts/map/pdftex/pdftex.map" 1760855734 94578 3d7812996b5e70e7dd3d06c67bb78c06 ""
   "C:/Users/ibram/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1200.pk" 1738617907 31952 93ed66e41c8575cb9456cff349b8b449 ""
   "C:/Users/ibram/AppData/Local/MiKTeX/fonts/pk/ljfour/jknappen/ec/dpi600/ecbx1440.pk" 1738617910 40136 cbcbb62a81871db108b38de7ab1a3054 ""
@@ -178,8 +178,8 @@
   "Objetivos.tex" 1761207253 828 6080677d46fd2a9fc1fc4da26ea6e6aa ""
   "Portada.tex" 1761205316 1049 6a5daa82a2103572f47ace3e12100a27 ""
   "Reporte P4.tex" 1761207216 1630 62e1dcb63974542cb0564bb0cddf9e36 ""
-  "build/Reporte P4.aux" 1761207351 716 f5d4cfcd0ef0b3326e68ce993398fbfa "pdflatex"
-  "build/Reporte P4.out" 1761207350 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
+  "build/Reporte P4.aux" 1761207967 716 f5d4cfcd0ef0b3326e68ce993398fbfa "pdflatex"
+  "build/Reporte P4.out" 1761207967 0 d41d8cd98f00b204e9800998ecf8427e "pdflatex"
   "d:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/Reporte/Reporte P4.tex" 1761207216 1630 62e1dcb63974542cb0564bb0cddf9e36 ""
   "logo_iimas.png" 1755116765 5925 5d0f25688b8d35d9f3b94c18bf444c98 ""
   "logo_unam.png" 1755135413 188003 eef45d262cd026baf97948f443637c11 ""
