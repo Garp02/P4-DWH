@@ -1,6 +1,5 @@
-Obtener el perfil de los datos almacenados en \texttt{Branch.csv} 
-siguiendo el procedimiento
-
+2. Obtener el perfil de los datos almacenados en \texttt{Branch.csv} 
+siguiendo el procedimiento:
 \begin{enumerate}
     \item Explorar los datos contenidos en \texttt{Branch.csv}
     
@@ -11,10 +10,10 @@ siguiendo el procedimiento
     \item Generar las siguientes estadísticas utilizando el 
         software de su preferencia:
         \begin{itemize}
-            \item[$\mathcal{A}1$.] Número de registros del archivo
-            \item[$\mathcal{A}2$.] Número de valores faltantes
-            \item[$\mathcal{A}3$.] Número de registros duplicados
-            \item[$\mathcal{A}4$.] Número de códigos postales de 
+            \item[$\mathcal{A}_1$.] Número de registros del archivo
+            \item[$\mathcal{A}_2$.] Número de valores faltantes
+            \item[$\mathcal{A}_3$.] Número de registros duplicados
+            \item[$\mathcal{A}_4$.] Número de códigos postales de 
                 Disparos Unidos de América válidos     
         \end{itemize}
     
@@ -25,3 +24,196 @@ siguiendo el procedimiento
         tabla Branch que no la proporcione \texttt{database-sucia-citi.csv}
         y explciar cómo completar dicha información. 
 \end{enumerate}
+
+\vspace{0.3 cm}
+
+\subsection*{Paso 1}
+
+Para este primer paso, leemos el archivo \texttt{Branch.csv} en un 
+try, para evitar que el programa truene por un archivo sin encontrar. 
+Y mostramos el encabezado (las primeras filas) del conjunto de datos.
+
+\vspace{0.5 cm}
+
+\lstinputlisting[
+    language = Python,
+    firstline = 4,
+    lastline = 13,
+    caption = {Exploración de los datos de \texttt{Branch.csv}.},
+    label = {lst:script2_1}
+]{D:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/script2.py}
+
+\vspace{1.5 cm}
+
+\subsection*{Paso 2}
+
+Aquí se detectan valores faltantes y formatos inconsistente.
+
+\vspace{0.5 cm}
+
+\lstinputlisting[
+    language = Python,
+    firstline = 15,
+    lastline = 21,
+    caption = {Características de campo.},
+    label = {lst:script2_2}
+]{D:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/script2.py}
+
+\vspace{0.5 cm}
+
+\begin{lstlisting}[language = Python, caption = {Información de los datos.}]
+Primeras filas del archivo Branch.csv:
+
+   branch_key                    branch_name           branch_address  \
+0           1                  boston branch  50 ROWES WHARF, FLOOR 4   
+1           2   milford (ford street) branch     370 BOSTON POST ROAD   
+2           3  milford banking center branch    1651 BOSTON POST ROAD   
+3           4               monroe ct branch      456 MONROE TURNPIKE   
+4           5                 newtown branch      30 CHURCH HILL ROAD   
+
+  branch_city branch_state  branch_zip  branch_type  
+0     Suffolk           MA      2110.0          NaN  
+1   New Haven           CT      6460.0          NaN  
+2         NaN           CT      6460.0          NaN  
+3   Fairfield           CT      6468.0          NaN  
+4   Fairfield           CT      6470.0          NaN  
+\end{lstlisting}
+
+\vspace{0.5 cm}
+
+Aquí se puede identificar que a \texttt{branch\_zip} le falta 
+homogeneidad de formato, pues son flotantes, lo cual no nos 
+sirve para un código postal, así que podríamos pasarlos a un 
+dato cadena. Por otro lado, \texttt{branch\_type} está vació, 
+pues fue una columna creada que no tenía algún equivalente 
+en el archivo original. 
+
+\vspace{0.5 cm}
+
+\begin{lstlisting}[language = Python, caption = {Información de la tabla.}]
+Información general del DataFrame:
+
+<class 'pandas.core.frame.DataFrame'>
+RangeIndex: 5445 entries, 0 to 5444
+Data columns (total 7 columns):
+ #   Column          Non-Null Count  Dtype  
+---  ------          --------------  -----  
+ 0   branch_key      5445 non-null   int64  
+ 1   branch_name     5445 non-null   object 
+ 2   branch_address  5386 non-null   object 
+ 3   branch_city     5342 non-null   object 
+ 4   branch_state    5388 non-null   object 
+ 5   branch_zip      5431 non-null   float64
+ 6   branch_type     0 non-null      float64
+dtypes: float64(2), int64(1), object(4)
+memory usage: 297.9+ KB
+None
+\end{lstlisting}
+
+\vspace{0.5 cm}
+
+En esta salida se visualiza el total de columnas y de registros 
+(en la columna \textbf{branch\_key}) y que tenemos columnas con 
+datos faltantes. Y hay una falta de homogeneidad de formato en los nombres 
+y direcciones. Es decir, todo esto indica que los datos necesitan una 
+limpieza adicional antes de cargarse a la base de datos final. 
+
+\vspace{0.5 cm}
+
+\subsection*{Paso 3}
+
+\lstinputlisting[
+    language = Python,
+    firstline = 25,
+    lastline = 50,
+    caption = {Estadísticas},
+    label = {lst:script2_3}
+]{D:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/script2.py}
+
+\vspace{0.5 cm}
+
+En esta parte vemos los registro totales, cada uno correspondiente con una 
+sucursal, los datos faltantes que, nos indican problemas de completitud. Y 
+la completitud nos da una referencia de cúan completa está una columna, 
+marca $0$ en \texttt{branch\_type}, que infica que no hay registros y muestra 
+un $0.981$ en la columna \texttt{branch\_city}, que no está de todo completa. 
+
+También da el número de registros duplicados; lo cual indica cuántas filas 
+son exactamente iguales en todas las columnas.
+Si el resultado es 0, no hay duplicados y los datos son únicos.
+En caso de que existan, deben eliminarse antes de cargar la tabla
+
+Se contaron lo códigos postales de cinco dígitos. Para esto, se cambian en 
+la columna \texttt{branch\_zip} (si es que existe) los valores 
+\textcolor{purple}{\texttt{NaN}} por una cadena vacía $''$ para evitar errores. 
+Luego se convierte toda la columna a texto para solucionar la falta de homogeneidad 
+anteriormente vista. Después eliminamos los los caracteres $.0$ al final de la cadena 
+y con una expresión regular, verificamos que nuestra cadena tenga únicamente cinco 
+caracteres (le indicamos el inicio y el fin de la cadena con $\land$ y \$ respectivamente).
+Finalmente, devolvemos un \texttt{True} o \texttt{False} si se cumple con la expresión 
+regular y contamos todos los \texttt{True}. 
+
+\vspace{0.5 cm}
+
+\begin{lstlisting}[language = Python, caption = {Estadísticas}]
+Total de registros = 5445
+
+Valores faltantes por campo:
+branch_key           0
+branch_name          0
+branch_address      59
+branch_city        103
+branch_state        57
+branch_zip          14
+branch_type       5445
+
+Completitud campo:
+branch_key        1.000
+branch_name       1.000
+branch_address    0.989
+branch_city       0.981
+branch_state      0.990
+branch_zip        0.997
+branch_type       0.000
+
+Registros duplicados = 0
+
+Códigos postales válidos = 5129
+\end{lstlisting}
+
+\vspace{2.5 cm}
+
+\subsection*{Paso 4}
+
+Otro indicador puede ser el total de valores únicos por columa.
+
+\vspace{0.5 cm}
+
+\lstinputlisting[
+    language = Python,
+    firstline = 52,
+    lastline = 54,
+    caption = {Características de campo.},
+    label = {lst:script2_2}
+]{D:/IIMAS/Base de datos/P4 - DWH - Extraccion y perfilado/script2.py}
+
+\vspace{0.5 cm}
+
+\begin{lstlisting}[language = Python, caption = {Valores únicos por campo.}]
+Valores únicos por campo:
+branch_key        5445
+branch_name       5341
+branch_address    5320
+branch_city        378
+branch_state        30
+branch_zip        3544
+branch_type          0
+\end{lstlisting}
+
+\vspace{0.5 cm}
+
+\subsection*{Paso 5}
+
+Si la tabla Branch requiere columnas que no existen en la tabla original, 
+sim limpiar, como \texttt{branch\_type} u otras, esa información deberá 
+completarse manualmente o con otra fuente.
